@@ -122,7 +122,10 @@ export default function Player({ setActiveSection, activeSection, userName, show
   const [showWebLine, setShowWebLine] = useState(false);
   const webLineTarget = useRef([0, 0, 0]);
 
-  // Handle keys
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const touchRef = useRef({ x: 0, y: 0 });
+
+  // Handle keys and mobile touch rotation
   useEffect(() => {
     const handleKey = (e) => {
       if ((e.code === 'KeyE' || e.code === 'Enter') && !activeSection && nearSection) {
@@ -132,9 +135,44 @@ export default function Player({ setActiveSection, activeSection, userName, show
         setActiveSection(null);
       }
     };
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length === 1) {
+        // Only rotate if not touching UI
+        if (e.target.tagName === 'CANVAS' || e.target.id === 'game-world') {
+          touchRef.current = { x: e.touches[0].pageX, y: e.touches[0].pageY, active: true };
+        } else {
+          touchRef.current.active = false;
+        }
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 1 && !activeSection && touchRef.current.active) {
+        const dx = e.touches[0].pageX - touchRef.current.x;
+        const dy = e.touches[0].pageY - touchRef.current.y;
+        
+        camera.rotation.order = 'YXZ';
+        camera.rotation.y -= dx * 0.005;
+        camera.rotation.x -= dy * 0.005;
+        camera.rotation.x = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, camera.rotation.x));
+        
+        touchRef.current = { x: e.touches[0].pageX, y: e.touches[0].pageY, active: true };
+      }
+    };
+
     window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [nearSection, activeSection, setActiveSection]);
+    if (isMobile) {
+      window.addEventListener('touchstart', handleTouchStart);
+      window.addEventListener('touchmove', handleTouchMove);
+    }
+    
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [nearSection, activeSection, setActiveSection, camera, isMobile]);
 
   useFrame((state, delta) => {
     if (!groupRef.current || activeSection) return;
@@ -237,7 +275,7 @@ export default function Player({ setActiveSection, activeSection, userName, show
 
   return (
     <>
-      <PointerLockControls />
+      {!isMobile && <PointerLockControls />}
       <group ref={groupRef}>
         <Trail width={1.5} length={8} color="#ff1744" attenuation={(t) => t * t}>
           <SpiderModel isMoving={isMoving} isZipping={isZipping} />
