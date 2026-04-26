@@ -1,0 +1,120 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 2, 5, 0.4);
+  backdrop-filter: blur(5px);
+  padding: 20px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh;
+  background: rgba(10, 10, 26, 0.75);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 
+    0 0 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 30px var(--section-color, rgba(255, 23, 68, 0.2));
+  animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleUp { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 28px 16px;
+  position: relative;
+}
+
+.headerLine {
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+}
+
+.panelTitle {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  flex: 1;
+}
+
+.closeBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.closeBtn:hover {
+  border-color: var(--section-color, var(--c-primary));
+  color: var(--section-color, var(--c-primary));
+  box-shadow: 0 0 15px rgba(255, 23, 68, 0.3);
+}
+
+.panelBody {
+  padding: 0 28px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.panelBody::-webkit-scrollbar { width: 4px; }
+.panelBody::-webkit-scrollbar-thumb { background: var(--section-color, var(--c-primary)); border-radius: 2px; }
+
+/* ── Corner decorations ── */
+.cornerTL, .cornerBR {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.cornerTL {
+  top: 0;
+  left: 0;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-radius: 16px 0 0 0;
+}
+
+.cornerBR {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  border-radius: 0 0 16px 0;
+}
+
+@media (max-width: 768px) {
+  .panel {
+    max-height: 80vh;
+    border-radius: 12px;
+  }
+  .panelHeader { padding: 16px 20px 12px; }
+  .panelTitle { font-size: 1.1rem; }
+  .panelBody { padding: 0 20px 20px; }
+}

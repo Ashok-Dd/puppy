@@ -1,0 +1,121 @@
+.controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.leftControls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.joystickDisabled {
+  opacity: 0.3;
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
+.tiltToggle {
+  background: rgba(10, 10, 26, 0.8);
+  border: 1px solid rgba(255, 23, 68, 0.3);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
+}
+
+.tiltToggle.active {
+  background: var(--c-primary);
+  border-color: white;
+  box-shadow: 0 0 15px rgba(255, 23, 68, 0.5);
+}
+
+.tiltToggle svg {
+  font-size: 1rem;
+}
+
+.joystickBase {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 23, 68, 0.08);
+  border: 2px solid rgba(255, 23, 68, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  position: relative;
+}
+
+.joystickKnob {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 23, 68, 0.6), rgba(255, 23, 68, 0.2));
+  border: 2px solid rgba(255, 23, 68, 0.5);
+  box-shadow: 0 0 15px rgba(255, 23, 68, 0.4);
+  transition: box-shadow 0.2s;
+  will-change: transform;
+}
+
+/* ── Buttons ── */
+.buttons {
+  display: flex;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 10, 26, 0.7);
+  backdrop-filter: blur(8px);
+  color: white;
+  font-size: 1.4rem;
+  font-family: var(--font-display);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  transition: all 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.9);
+}
+
+.btnZap {
+  border-color: rgba(255, 23, 68, 0.5);
+  box-shadow: 0 0 15px rgba(255, 23, 68, 0.3);
+}
+
+.btnAction {
+  border-color: rgba(0, 229, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+@media (min-width: 769px) {
+  .controls { display: none; }
+}
